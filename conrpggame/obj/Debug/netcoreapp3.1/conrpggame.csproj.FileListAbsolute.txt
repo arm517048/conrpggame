@@ -11,3 +11,5 @@ D:\other\stuido project\conrpggame\conrpggame\obj\Debug\netcoreapp3.1\conrpggame
 D:\other\stuido project\conrpggame\conrpggame\obj\Debug\netcoreapp3.1\conrpggame.dll
 D:\other\stuido project\conrpggame\conrpggame\obj\Debug\netcoreapp3.1\conrpggame.pdb
 D:\other\stuido project\conrpggame\conrpggame\obj\Debug\netcoreapp3.1\conrpggame.genruntimeconfig.cache
+D:\other\stuido project\conrpggame\conrpggame\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+D:\other\stuido project\conrpggame\conrpggame\obj\Debug\netcoreapp3.1\conrpggame.csproj.CopyComplete

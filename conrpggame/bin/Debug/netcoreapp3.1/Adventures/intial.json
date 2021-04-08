@@ -1,4 +1,10 @@
 {
-  "Title": "掌握角色",
-  "Description": "新手入門"
+  "GUID": "0C5558CA-9EEA-460E-82BD-D496C35E486F",
+  "Title": "new rpg game by console ",
+  "Description": "need help",
+  "CompletionXPReward": 250,
+  "CompletionGolereward": 100,
+  "MaxLevel": 1,
+  "MinimumLevel": 1
+
 }

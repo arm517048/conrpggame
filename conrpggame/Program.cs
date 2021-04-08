@@ -1,10 +1,11 @@
-﻿using conrpggame.Adventures;
+﻿using conrpggame.Game;
 using System;
 
 namespace conrpggame
 {
     class Program
     {
+        private static GameService gameService = new GameService();
         static void Main(string[] args)
         {
             MakeTitle();        //標題
@@ -35,7 +36,7 @@ namespace conrpggame
                 switch (Console.ReadLine().ToUpper())  //輸入選項並自動轉換成大寫 使用switch
                 {
                     case "S":
-                        StartGame();
+                        gameService.StartGame();
                         inputInvalid = true;
                         break;
                     case "C":
@@ -69,14 +70,6 @@ namespace conrpggame
         private static void LoadGame()
         {
             Console.WriteLine("讀取角色中");
-        }
-
-        private static void StartGame()
-        {
-            var basePath = $"{AppDomain.CurrentDomain.BaseDirectory}adventures";
-            var initailAdventrue = new Adventrues();
-            Console.WriteLine("遊戲啟程~祝好運");
-           // if (File)
         }
         private static void Creatcher()
         {
