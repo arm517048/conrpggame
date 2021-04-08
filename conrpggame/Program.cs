@@ -9,7 +9,7 @@ namespace conrpggame
         {
             MakeTitle();        //標題
             MakeMainMenu();     //主選單
-            Console.ReadLine();
+            Console.ReadLine(); 
             
         }
         private static void MakeTitle()
@@ -76,6 +76,7 @@ namespace conrpggame
             var basePath = $"{AppDomain.CurrentDomain.BaseDirectory}adventures";
             var initailAdventrue = new Adventrues();
             Console.WriteLine("遊戲啟程~祝好運");
+           // if (File)
         }
         private static void Creatcher()
         {
