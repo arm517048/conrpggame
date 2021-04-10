@@ -1,11 +1,13 @@
-﻿using conrpggame.Game;
+﻿using conrpggame.Adventures;
+using conrpggame.Game;
 using System;
 
 namespace conrpggame
 {
     class Program
     {
-        private static GameService gameService = new GameService();
+        private static AdventureService AdventureService = new AdventureService();
+        private static GameService gameService = new GameService(AdventureService);
         static void Main(string[] args)
         {
             MakeTitle();        //標題
@@ -24,7 +26,7 @@ namespace conrpggame
             Console.WriteLine("*      │    │  ││││└─┐│  ││    ├┤    │    ├┬┘ ├─┤││││       *");
             Console.WriteLine("*      └─┘└─┘┘└┘└─┘└─┘┴─┘└─┘  └─┘┴└─ ┴  ┴└┴┘┴─┘   *");
             Console.WriteLine("*                                                                                    *");
-            Console.WriteLine("**************************************************************************************\n\n");
+            Console.WriteLine("**************************************************************************************");
         }
         private static void MakeMainMenu()
         {
