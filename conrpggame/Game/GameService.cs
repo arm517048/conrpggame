@@ -1,33 +1,30 @@
-﻿using conrpggame.Adventures;
-using Newtonsoft.Json;
+﻿using conrpggame.Adventures.Interfaces;
+using conrpggame.Entities.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+
+
 
 namespace conrpggame.Game
 {
     public class GameService
     {
+        private IAdventrueService adventrueService;
+        private ICharacterService characterService;
+
+        public GameService(IAdventrueService AdventrueService , ICharacterService CharacterService)
+        {
+            adventrueService = AdventrueService;
+            characterService = CharacterService;
+        }
         public void StartGame()
         {
-            var basePath = $"{AppDomain.CurrentDomain.BaseDirectory}adventures";
-            var initailAdventrue = new Adventrues();
-            Console.WriteLine("遊戲啟程~祝好運");
-            if (File.Exists($"{basePath}\\intial.json"))
-            {
-                var directory = new DirectoryInfo(basePath);
-                var intailJsonFile = directory.GetFiles("intial.json");
+            var initailAdventrue = adventrueService.GetInitalAdventrue();
+            var initalCharcter = characterService.LoadInitialCharacter();
 
-
-                using (StreamReader fi = File.OpenText(intailJsonFile[0].FullName))
-                {
-                    initailAdventrue = JsonConvert.DeserializeObject<Adventrues>(fi.ReadToEnd());
-                }
-
-                Console.WriteLine($"Adventure : { initailAdventrue.Title}");
-                Console.WriteLine($"Description : {initailAdventrue.Description}");
-            }
+            Console.WriteLine($"Adventure : { initailAdventrue.Title}");
+            Console.WriteLine($"Description : {initailAdventrue.Description}");
+            Console.WriteLine($"Charcter Name :{initalCharcter.Name}");
+            Console.WriteLine($"Level : {initalCharcter.Level}");
         }
     }
 }
