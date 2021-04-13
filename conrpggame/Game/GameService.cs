@@ -19,10 +19,12 @@ namespace conrpggame.Game
         public void StartGame()
         {
             var initailAdventrue = adventrueService.GetInitalAdventrue();
-            var initalCharcterService = characterService.LoadInitialCharacter();
+            var initalCharcter = characterService.LoadInitialCharacter();
 
             Console.WriteLine($"Adventure : { initailAdventrue.Title}");
             Console.WriteLine($"Description : {initailAdventrue.Description}");
+            Console.WriteLine($"Charcter Name :{initalCharcter.Name}");
+            Console.WriteLine($"Level : {initalCharcter.Level}");
         }
     }
 }

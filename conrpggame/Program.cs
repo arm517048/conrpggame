@@ -1,4 +1,5 @@
 ﻿using conrpggame.Adventures;
+using conrpggame.Entities;
 using conrpggame.Game;
 using System;
 
@@ -7,7 +8,8 @@ namespace conrpggame
     class Program
     {
         private static AdventureService AdventureService = new AdventureService();
-        private static GameService gameService = new GameService(AdventureService);
+        private static CharacterService CharacterService = new CharacterService();
+        private static GameService gameService = new GameService(AdventureService, CharacterService);
         static void Main(string[] args)
         {
             MakeTitle();        //標題
