@@ -30,8 +30,7 @@ namespace conrpggame.Game
             }
             catch (Exception ex)
             {
-
-                throw;
+                Console.WriteLine($"發生了一些錯誤，目前正要從地牢逃脫中 {ex.Message}");
             }
 
         }
