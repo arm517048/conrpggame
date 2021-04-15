@@ -12,18 +12,21 @@ namespace conrpggame.Entities
         {
             var basePath = $"{AppDomain.CurrentDomain.BaseDirectory}Character";
             var initailCharacter = new Character();
-            Console.WriteLine("遊戲啟程~祝好運");
+            
             if (File.Exists($"{basePath}\\conan.json"))
             {
                 var directory = new DirectoryInfo(basePath);
-                var intailJsonFile = directory.GetFiles("conan.json");
+                var intailJsonFile = directory.GetFiles("conNan.json");
 
 
-                using (StreamReader fi = File.OpenText(intailJsonFile[0].FullName))
-                {
-                    initailCharacter = JsonConvert.DeserializeObject<Character>(fi.ReadToEnd());
-                }
+                using StreamReader fi = File.OpenText(intailJsonFile[0].FullName);
+                initailCharacter = JsonConvert.DeserializeObject<Character>(fi.ReadToEnd());
             }
+            else
+            {
+                throw new Exception("Initail character not found.");
+            }
+
             return initailCharacter;
         }
     }

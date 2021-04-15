@@ -18,6 +18,8 @@ namespace conrpggame.Game
         }
         public void StartGame()
         {
+            try
+            {
             var initailAdventrue = adventrueService.GetInitalAdventrue();
             var initalCharcter = characterService.LoadInitialCharacter();
 
@@ -25,6 +27,13 @@ namespace conrpggame.Game
             Console.WriteLine($"Description : {initailAdventrue.Description}");
             Console.WriteLine($"Charcter Name :{initalCharcter.Name}");
             Console.WriteLine($"Level : {initalCharcter.Level}");
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
         }
     }
 }
