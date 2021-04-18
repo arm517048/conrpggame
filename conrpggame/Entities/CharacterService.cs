@@ -13,26 +13,26 @@ namespace conrpggame.Entities
     {
 
 
-        public Character LoadInitialCharacter()
+        public Character LoadCharacter(string name)
         {
             var basePath = $"{AppDomain.CurrentDomain.BaseDirectory}Character";
-            var initailCharacter = new Character();
+            var Character = new Character();
             
-            if (File.Exists($"{basePath}\\conan.json"))
+            if (File.Exists($"{basePath}\\{name}.json"))
             {
                 var directory = new DirectoryInfo(basePath);
-                var intailJsonFile = directory.GetFiles("conan.json");
+                var characterJsonFile = directory.GetFiles($"{name}.json");
 
 
-                using StreamReader fi = File.OpenText(intailJsonFile[0].FullName);
-                initailCharacter = JsonConvert.DeserializeObject<Character>(fi.ReadToEnd());
+                using StreamReader fi = File.OpenText(characterJsonFile[0].FullName);
+                Character = JsonConvert.DeserializeObject<Character>(fi.ReadToEnd());
             }
             else
             {
-                throw new Exception("Initail character not found.");
+                throw new Exception("Character not found.");
             }
 
-            return initailCharacter;
+            return Character;
         }
 
         public List<Character> GetCharactersInRange(int minLevel = 1, int maxLevel = 20)

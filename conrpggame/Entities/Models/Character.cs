@@ -1,11 +1,9 @@
 ﻿using conrpggame.Items.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace conrpggame.Entities.Models
 {
-    public class Character  //建立基本資料
+    public class Character :Entity //建立基本資料
     {
         public string Name;
         public int Level;
@@ -17,7 +15,6 @@ namespace conrpggame.Entities.Models
         public bool IsAlive;
         public int ArmoClass;
         public List<IItem> Inventory;
-        public int HitPoints;
         public CharacterClass Class;
 
     }

@@ -1,19 +1,19 @@
 ﻿using conrpggame.Adventures;
 using conrpggame.Adventures.Interfaces;
 using conrpggame.Entities.Interfaces;
+using conrpggame.Entities.Models;
+using conrpggame.Game.Interfaces;
 using System;
-using Newtonsoft.Json;
-
-
 
 namespace conrpggame.Game
 {
-    public class GameService
+    public class GameService : IGameService
     {
         private IAdventrueService adventrueService;
         private ICharacterService characterService;
+        private Character Character;
 
-        public GameService(IAdventrueService AdventrueService , ICharacterService CharacterService)
+        public GameService(IAdventrueService AdventrueService, ICharacterService CharacterService)
         {
             adventrueService = AdventrueService;
             characterService = CharacterService;
@@ -22,7 +22,7 @@ namespace conrpggame.Game
         {
             try
             {
-                if(adventures == null)
+                if (adventures == null)
                 {
                     adventures = adventrueService.GetInitalAdventrue();
                 }
@@ -32,7 +32,7 @@ namespace conrpggame.Game
                 for (int i = 0; i <= adventures.Title.Length + 3; i++)
                 {
                     Console.Write("*");
-                    if(i == adventures.Title.Length + 3)
+                    if (i == adventures.Title.Length + 3)
                     {
                         Console.WriteLine("\n");
                     }
@@ -55,7 +55,7 @@ namespace conrpggame.Game
                 Console.ForegroundColor = ConsoleColor.White;
 
                 var charactersInRange = characterService.GetCharactersInRange(adventures.MinimumLevel, adventures.MaxLevel);
-                if(charactersInRange.Count == 0)
+                if (charactersInRange.Count == 0)
                 {
                     Console.WriteLine("很抱歉，您的等級不符合目前的區間，請重新選擇等級區間。");
                     return false;
@@ -67,8 +67,14 @@ namespace conrpggame.Game
                     foreach (var character in charactersInRange)
                     {
                         Console.WriteLine($"#{characterCount} {character.Name} Level -{character.Level} {character.Class}");
-                        characterCount++; 
+                        characterCount++;
                     }
+                    Character = characterService.LoadCharacter(charactersInRange[Convert.ToInt32(Console.ReadLine())].Name);
+
+                    Monster Mymonster = new Monster();  //Dont need - kill for next level
+
+
+
                 }
             }
             catch (Exception ex)

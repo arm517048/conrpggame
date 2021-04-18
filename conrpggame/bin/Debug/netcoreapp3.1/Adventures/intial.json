@@ -6,5 +6,51 @@
   "CompletionGolereward": 100,
   "MaxLevel": 1,
   "MinimumLevel": 1,
+  "Rooms": [
+    {
+      "RoomNumber": 1,
+      "Description": "wellcome to this room",
+      "Exits": [
+        {
+          "Locked": false,
+          "WallLocation": 0,
+          "LeadToRoomNumber": 2
+        },
+        {
+          "Locked": false,
+          "WallLocation": 1,
+          "LeadToRoomNumber": 3
+        }
+      ]
+    },
+    {
+      "RoomNumber": 2,
+      "Description": "TrapRoom",
+      "Tarp": {
+        "TarpType": 1
+      },
+      "Chest": {
+        "Gold" : 5,
+      },
+      "Exits": [
+        {
+          "Locked": false,
+          "WallLocation": 1,
+          "LeadToRoomNumber": 1
+        }
+      ]
+    },
+    {
+      "RoomNumber": 3,
+      "Description": "Long HallWay",
+      "Exits": [
+        {
+          "Locked": false,
+          "WallLocation": 3,
+          "LeadToRoomNumber": 1
+        } 
+      ]
+    }
+  ]
 
 }
