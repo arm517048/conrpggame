@@ -2,13 +2,13 @@
 {
         public class Adventrues
     {
-        public string GUID { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public int CompletionXPReward { get; set; }
-        public int CompletionGolereward { get; set; }
-        public int MaxLevel { get; set; }
-        public int MinimumLevel { get; set; }
+        public string GUID { get; set; }//圖形介面
+        public string Title { get; set; }//標題
+        public string Description { get; set; }//描述
+        public int CompletionXPReward { get; set; } //完成獎勵(XP)
+        public int CompletionGolereward { get; set; }//完成獎勵(金錢)
+        public int MaxLevel { get; set; } //(最大等級
+        public int MinimumLevel { get; set; }//最小等級)
 
 
         public Adventrues()

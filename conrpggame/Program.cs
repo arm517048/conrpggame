@@ -79,6 +79,7 @@ namespace conrpggame
         {
             Console.WriteLine("請創立角色");
         }
+
     }
 
     

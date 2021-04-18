@@ -16,7 +16,7 @@ namespace conrpggame.Entities
             if (File.Exists($"{basePath}\\conan.json"))
             {
                 var directory = new DirectoryInfo(basePath);
-                var intailJsonFile = directory.GetFiles("conNan.json");
+                var intailJsonFile = directory.GetFiles("conan.json");
 
 
                 using StreamReader fi = File.OpenText(intailJsonFile[0].FullName);
