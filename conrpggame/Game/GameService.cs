@@ -18,7 +18,7 @@ namespace conrpggame.Game
             adventrueService = AdventrueService;
             characterService = CharacterService;
         }
-        public void StartGame(Adventrues adventures = null)
+        public bool StartGame(Adventrues adventures = null)
         {
             try
             {
@@ -54,19 +54,28 @@ namespace conrpggame.Game
                 Console.BackgroundColor = ConsoleColor.Blue;
                 Console.ForegroundColor = ConsoleColor.White;
 
-                var initalCharcter = characterService.LoadInitialCharacter();
-
-            //Console.WriteLine($"Adventure : { initailAdventrue.Title}");
-            //Console.WriteLine($"Description : {initailAdventrue.Description}");
-            Console.WriteLine($"Charcter Name :{initalCharcter.Name}");
-            Console.WriteLine($"Level : {initalCharcter.Level}");
+                var charactersInRange = characterService.GetCharactersInRange(adventures.MinimumLevel, adventures.MaxLevel);
+                if(charactersInRange.Count == 0)
+                {
+                    Console.WriteLine("很抱歉，您的等級不符合目前的區間，請重新選擇等級區間。");
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("誰想選擇死亡!?");
+                    var characterCount = 0;
+                    foreach (var character in charactersInRange)
+                    {
+                        Console.WriteLine($"#{characterCount} {character.Name} Level -{character.Level} {character.Class}");
+                        characterCount++; 
+                    }
+                }
             }
             catch (Exception ex)
             {
-                
                 Console.WriteLine($"發生了一些錯誤，目前正要從地牢逃脫中 {ex.Message}");
             }
-
+            return true;
         }
     }
 }

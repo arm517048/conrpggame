@@ -3,5 +3,6 @@
   "Level": "1",
   "Gold": "2",
   "HitPoints": 4,
-
+  "Class": "1",
+  "IsAlive": true,
 }

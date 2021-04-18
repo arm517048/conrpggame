@@ -18,6 +18,7 @@ namespace conrpggame.Entities.Models
         public int ArmoClass;
         public List<IItem> Inventory;
         public int HitPoints;
+        public CharacterClass Class;
 
     }
     public class Abilities  //建立屬性
@@ -30,5 +31,12 @@ namespace conrpggame.Entities.Models
         public int Charisma;    //魅力
         public int Lucky;       //幸運
         
+    }
+    public enum CharacterClass//職業選單
+    {
+        Fighter,
+        Thief,
+        MagicUser,
+        Healer,
     }
 }
