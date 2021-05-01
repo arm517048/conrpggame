@@ -26,33 +26,8 @@ namespace conrpggame.Game
                 {
                     adventures = adventrueService.GetInitalAdventrue();
                 }
-                Console.Clear();
-                Console.WriteLine();
-                //create Title Banner
-                for (int i = 0; i <= adventures.Title.Length + 3; i++)
-                {
-                    Console.Write("*");
-                    if (i == adventures.Title.Length + 3)
-                    {
-                        Console.WriteLine("\n");
-                    }
-
-                }
-                Console.WriteLine($"|{adventures.Title}|");
-                for (int i = 0; i <= adventures.Title.Length + 3; i++)
-                {
-                    Console.Write("*");
-                    if (i == adventures.Title.Length + 3)
-                    {
-                        Console.WriteLine("\n");
-                    }
-
-                }
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine($"\n{adventures.Description.ToUpper()}");
-                Console.BackgroundColor = ConsoleColor.Blue;
-                Console.ForegroundColor = ConsoleColor.White;
+                CreateTitleBanner(adventures.Title);
+                CreateDescriptionBackcolor(adventures.Description);
 
                 var charactersInRange = characterService.GetCharactersInRange(adventures.MinimumLevel, adventures.MaxLevel);
                 if (charactersInRange.Count == 0)
@@ -82,6 +57,41 @@ namespace conrpggame.Game
                 Console.WriteLine($"發生了一些錯誤，目前正要從地牢逃脫中 {ex.Message}");
             }
             return true;
+        }
+
+        private static void CreateDescriptionBackcolor(string description)
+        {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine($"\n{description.ToUpper()}");
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        private static void CreateTitleBanner(string title)
+        {
+            Console.Clear();
+            Console.WriteLine();
+            //create Title Banner
+            for (int i = 0; i <= title.Length + 3; i++)
+            {
+                Console.Write("*");
+                if (i == title.Length + 3)
+                {
+                    Console.WriteLine("\n");
+                }
+
+            }
+            Console.WriteLine($"|{title}|");
+            for (int i = 0; i <= title.Length + 3; i++)
+            {
+                Console.Write("*");
+                if (i == title.Length + 3)
+                {
+                    Console.WriteLine("\n");
+                }
+
+            }
         }
     }
 }
