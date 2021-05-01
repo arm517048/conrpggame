@@ -20,9 +20,7 @@ namespace conrpggame.Game
         }
         public bool StartGame(Adventrues adventures = null)
         {
-            try
-            {
-                if (adventures == null)
+             if (adventures == null)
                 {
                     adventures = adventrueService.GetInitalAdventrue();
                 }
@@ -51,11 +49,7 @@ namespace conrpggame.Game
 
 
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"發生了一些錯誤，目前正要從地牢逃脫中 {ex.Message}");
-            }
+          
             return true;
         }
 

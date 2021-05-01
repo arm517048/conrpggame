@@ -34,34 +34,41 @@ namespace conrpggame
         {
             MakeMeunOptions();
             var inputInvalid = false;    //利用布林代數來做判斷 //預設是錯的
-            
-            while (!inputInvalid)       //如果inputInvalid不是錯的往下執行
+            try
             {
-                switch (Console.ReadLine().ToUpper())  //輸入選項並自動轉換成大寫 使用switch
+
+                while (!inputInvalid)       //如果inputInvalid不是錯的往下執行
                 {
-                    case "S":
-                        gameService.StartGame();
-                        inputInvalid = true;
-                        break;
-                    case "C":
-                        Creatcher();
-                        inputInvalid = true;
-                        break;
-                    case "L":
-                        LoadGame();
-                        inputInvalid = true;
-                        break;
-                    default:
-                        
-                        Console.WriteLine("\n請重新選擇");
-                        MakeMeunOptions();
-                        inputInvalid = false;
-                        break;
+                    switch (Console.ReadLine().ToUpper())  //輸入選項並自動轉換成大寫 使用switch
+                    {
+                        case "S":
+                            gameService.StartGame();
+                            inputInvalid = true;
+                            break;
+                        case "C":
+                            Creatcher();
+                            inputInvalid = true;
+                            break;
+                        case "L":
+                            LoadGame();
+                            inputInvalid = true;
+                            break;
+                        default:
+
+                            Console.WriteLine("\n請重新選擇");
+                            MakeMeunOptions();
+                            inputInvalid = false;
+                            break;
+                    }
+
                 }
-               
+
+
             }
-
-
+            catch (Exception ex)
+            {
+                Console.WriteLine($"發生了一些錯誤，地精逃獄了，現正抓回中。請稍待{ex.Message}");
+            }
         }
 
         private static void MakeMeunOptions()
