@@ -5,16 +5,23 @@ using System.Text;
 
 namespace conrpggame.Utilities
 {
-    public class ConsoleMessageHandler : IMessageHandler    
+    public class ConsoleMessageHandler : IMessageHandler
     {
         public string Read()
         {
             return Console.ReadLine();
         }
 
-        public void Write(string message = "")
+        public void Write(string message = "", bool withLine = true)
         {
-            Console.WriteLine(message);
+            if (withLine)
+            {
+                Console.WriteLine(message);
+            }
+            else
+            {
+                Console.WriteLine(message);
+            }
         }
         /// <summary>
         /// 用來清理螢幕

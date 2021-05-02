@@ -62,7 +62,7 @@ namespace RpgCallUnitTest
             //建立模擬人物
             var characterList = new List<Character>
             {
-                new Character{ Name = "tony" },
+                new Character{ Name = "conan" },
                 new Character{ Name = "todd" }
             };
 

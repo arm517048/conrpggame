@@ -6,6 +6,8 @@ namespace conrpggame.Adventures.Models
     {
         public TarpType tarpType;
         public Die DamageDie = Die.D32;
+        public bool SearchedFor = false;
+        public bool TrippedOrDisarmed = false;
     }
     public enum TarpType    //陷阱種類
     {
