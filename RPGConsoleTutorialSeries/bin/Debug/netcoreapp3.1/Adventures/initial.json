@@ -1,0 +1,130 @@
+{
+  "GUID": "0C5558CA-9EEA-460E-82BD-D496C35E4B6F",
+  "Title": "The Duke's Chalice.",
+  "Description": "You've made it!  Your first adventure...searching for the Duke's cup in a rundown monster infested ruin...YES!  \n You cannot believe you're really an adventurer now.  But will you survive?  As you survey this initial plain entryway you see...",
+  "CompletionXPReward": 250,
+  "CompletionGoldReward": 100,
+  "MaxLevel": 1,
+  "MinimumLevel": 1,
+  "Rooms": [
+    {
+      "RoomNumber": 1,
+      "Description": "You've made it! ENTRYWAY",
+      "Trap": {
+        "TrapType": 1
+      },
+      "Chest": {
+        "Treasure": [
+          {
+            "Name": "key",
+            "Description": "ugly brown key",
+            "ObjectiveNumber": 2,
+            "GoldValue": 0
+          }
+        ]
+      },
+      "Exits": [
+        {
+          "WallLocation": 0,
+          "LeadsToRoomNumber": 2
+        },
+        {
+          "WallLocation": 1,
+          "LeadsToRoomNumber": 3
+        }
+      ]
+    },
+    {
+      "RoomNumber": 2,
+      "Description": "Scary Room",
+      "Trap": {
+        "TrapType": 1
+      },
+      "Chest": {
+        "Lock": {
+          "Locked": true,
+          "KeyNumber": 22
+        },
+        "Gold": 5,
+        "Treasure": [
+          {
+            "Name": "Rope",
+            "Description": "Rope that looks fancy",
+            "ObjectiveNumber": 0,
+            "Weight": 1,
+            "GoldValue": 0
+          },
+          {
+            "Name": "HolySymbol",
+            "Description": "This is the Duke's chalice!",
+            "ObjectiveNumber": 123,
+            "Weight": 2,
+            "GoldValue": 50
+          }
+        ]
+      },
+      "Exits": [
+        {
+          "WallLocation": 2,
+          "LeadsToRoomNumber": 1
+        }
+      ]
+    },
+    {
+      "RoomNumber": 3,
+      "Description": "LONG HALLWAY",
+      "Exits": [
+        {
+          "WallLocation": 3,
+          "LeadsToRoomNumber": 1
+        },
+        {
+          "Lock": {
+            "Locked": true,
+            "KeyNumber": 2
+          },
+          "WallLocation": 1,
+          "LeadsToRoomNumber": 4
+        }
+      ]
+    },
+    {
+      "RoomNumber": 4,
+      "Description": "This room looks like an old dust closet, there is an old chest in the corner and tattered garments scattered about.",
+      "Exits": [
+        {
+          "WallLocation": 3,
+          "LeadsToRoomNumber": 3
+        }
+      ],
+      "Chest": {
+        "Trap": {
+          "TrapType": 1
+        },
+        "Treasure": [
+          {
+            "Name": "Food",
+            "Description": "Maggoty bread",
+            "ObjectiveNumber": 0,
+            "Weight": 0,
+            "GoldValue": 0
+          },
+          {
+            "Name": "Key",
+            "Description": "Rusty looking key",
+            "ObjectiveNumber": 22,
+            "Weight": 0,
+            "GoldValue": 0
+          }
+        ],
+        "Exits": [
+          {
+            "Locked": false,
+            "WallLocation": 2,
+            "LeadsToRoomNumber": 1
+          }
+        ]
+      }
+    }
+  ]
+}
