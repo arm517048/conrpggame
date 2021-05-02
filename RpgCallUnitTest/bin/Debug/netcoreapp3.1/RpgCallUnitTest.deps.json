@@ -2020,7 +2020,8 @@
       "xunit.runner.visualstudio/2.4.3": {},
       "conrpggame/1.0.0": {
         "dependencies": {
-          "Newtonsoft.Json": "13.0.1"
+          "Newtonsoft.Json": "13.0.1",
+          "xunit.extensibility.core": "2.4.1"
         },
         "runtime": {
           "conrpggame.dll": {}

@@ -1,15 +1,17 @@
 ﻿using conrpggame.Adventures;
 using conrpggame.Entities;
 using conrpggame.Game;
+using conrpggame.Utilities;
 using System;
 
 namespace conrpggame
 {
     class Program
     {
-        private static AdventureService AdventureService = new AdventureService();
-        private static CharacterService CharacterService = new CharacterService();
-        private static GameService gameService = new GameService(AdventureService, CharacterService);
+        private static readonly AdventureService AdventureService = new AdventureService();
+        private static readonly CharacterService CharacterService = new CharacterService();
+        private static readonly ConsoleMessageHandler consoleMessageHandler = new ConsoleMessageHandler();
+        private static GameService gameService = new GameService(AdventureService, CharacterService,consoleMessageHandler);
         static void Main(string[] args)
         {
             MakeTitle();        //標題
