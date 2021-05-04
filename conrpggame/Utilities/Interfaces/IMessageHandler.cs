@@ -7,7 +7,13 @@
         public string Read();
 
         /// <summary>
-        /// 用來清理螢幕
+        /// Write a message on a line and then read the line
+        /// </summary>
+        /// <param name="message"></param>
+        public void WriteRead(string message);
+
+        /// <summary>
+        /// Used to clear the screen
         /// </summary>
         public void Clear();
     }

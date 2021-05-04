@@ -20,8 +20,13 @@ namespace conrpggame.Utilities
             }
             else
             {
-                Console.WriteLine(message);
+                Console.Write(message);
             }
+        }
+        public void WriteRead(string message)
+        {
+            Console.WriteLine(message);
+            Console.ReadLine();
         }
         /// <summary>
         /// 用來清理螢幕

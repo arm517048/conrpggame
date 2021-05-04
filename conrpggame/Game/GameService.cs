@@ -8,54 +8,72 @@ using conrpggame.Utilities.Interfaces;
 using conrpggame.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace conrpggame.Game
 {
     public class GameService : IGameService
     {
-        private IAdventrueService adventrueService;
-        private ICharacterService characterService;
-        private IMessageHandler messageHandler;
+        private readonly IAdventrueService adventureService;
+        private readonly ICharacterService characterService;
+        private readonly IMessageHandler messageHandler;
 
-        private Character Character;
+        private Character character;
+        private Adventrues gameAdventure;
+        private bool gameWon = false;
+        private string gameWinningDescription;
 
         public GameService(IAdventrueService AdventureService, ICharacterService CharacterService, IMessageHandler MessageHandler)
         {
-            adventrueService = AdventureService;
+            adventureService = AdventureService;
             characterService = CharacterService;
             messageHandler = MessageHandler;
-
         }
         public bool StartGame(Adventrues adventures = null)
         {
-            if (adventures == null)
+            gameAdventure = adventures;
+            if (gameAdventure == null)
             {
-                adventures = adventrueService.GetInitalAdventrue();
+                gameAdventure = adventureService.GetInitalAdventrue();
             }
-            CreateTitleBanner(adventures.Title);
+            CreateTitleBanner(gameAdventure.Title);
 
-            CreateDescriptionBackcolor(adventures);
+            CreateDescriptionBanner(gameAdventure);
 
-            var charactersInRange = characterService.GetCharactersInRange(adventures.MinimumLevel, adventures.MaxLevel);
+            var charactersInRange = characterService.GetCharactersInRange(gameAdventure.GUID, gameAdventure.MinimumLevel, gameAdventure.MaxLevel);
             if (charactersInRange.Count == 0)
             {
-                messageHandler.Write("很抱歉，您的等級不符合目前的區間，請重新選擇等級區間。");
-                return false;
+                messageHandler.Write("Sorry, you do not have any characters in the range level of the adventure you are trying to play.");
+                messageHandler.Write("Would you like to:");
+                messageHandler.Write("C)reate a new character");
+                messageHandler.Write("R)eturn to the Main Menu?");
+                var playerDecision = messageHandler.Read().ToLower();
+                if (playerDecision == "r")
+                {
+                    messageHandler.Clear();
+                    Program.MakeMainMenu();
+                }
+                else if (playerDecision == "c")
+                {
+                    messageHandler.Clear();
+                    characterService.CreateCharacter();
+                }
             }
             else
             {
-                messageHandler.Write("誰想選擇死亡!?");
+                messageHandler.Write("WHO DOTH WISH TO CHANCE DEATH!?");
                 var characterCount = 0;
                 foreach (var character in charactersInRange)
                 {
-                    messageHandler.Write($"#{characterCount} {character.Name} Level -{character.Level} {character.Class}");
+                    messageHandler.Write($"#{characterCount} {character.Name} Level - {character.Level} {character.Class}");
                     characterCount++;
                 }
             }
-            Character = characterService.LoadCharacter(charactersInRange[Convert.ToInt32(messageHandler.Read())].Name);
+            character = characterService.LoadCharacter(charactersInRange[Convert.ToInt32(messageHandler.Read())].Name);
             //Monster Mymonster = new Monster();  //Dont need - kill for next level
-            var rooms = adventures.rooms;
+            var rooms = gameAdventure.Rooms;
             RoomProcessor(rooms[0]);
+
             return true;
         }
 
@@ -67,20 +85,21 @@ namespace conrpggame.Game
 
             Console.BackgroundColor = ConsoleColor.Red;
             Console.ForegroundColor = ConsoleColor.Yellow;
-            messageHandler.Write($"\nLevels : {adventrues.MinimumLevel}-{adventrues.MaxLevel}");
-            messageHandler.Write($"\nCompletion Rewards={adventrues.CompletionGolereward}gold & {adventrues.CompletionXPReward}xp");
+
+            messageHandler.Write($"\nLevels : {adventrues.MinimumLevel} - {adventrues.MaxLevel}");
+            messageHandler.Write($"\nCompletion Rewards = {adventrues.CompletionGolereward} gold & {adventrues.CompletionXPReward} xp");
             messageHandler.Write();
         }
 
         private void CreateTitleBanner(string title)//把Consolec換成messageHandler。因為已經建立messageHandler(訊息控制中心。所以蟲那發放
         {
             messageHandler.Clear();
-            //messageHandler.Write();
+            messageHandler.Write();
 
             //create Title Banner
             for (int i = 0; i <= title.Length + 3; i++)
             {
-                Console.Write("*", false);
+                messageHandler.Write("*", false);
                 if (i == title.Length + 3)
                 {
                     messageHandler.Write("\n");
@@ -89,7 +108,7 @@ namespace conrpggame.Game
             messageHandler.Write($"| {title} |");
             for (int i = 0; i <= title.Length + 3; i++)
             {
-                Console.Write("*", false);
+                messageHandler.Write("*", false);
                 if (i == title.Length + 3)
                 {
                     messageHandler.Write("\n");
@@ -104,13 +123,13 @@ namespace conrpggame.Game
         private void RoomDescription(Room room)
         {
             messageHandler.Clear();
-            messageHandler.Write("~!@#$%^&~~~~~~~~~~~~~~");
+            messageHandler.Write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
-            messageHandler.Write($"{room.RoomNumber} {room.Description} ");
+            messageHandler.Write($"{room.RoomNumber} {room.Description}");
 
             if (room.Exits.Count == 1)
             {
-                messageHandler.Write($"出口在那邊~{room.Exits[0].WallLocation} 的牆.");
+                messageHandler.Write($"There is an exit in this room on the {room.Exits[0].WallLocation} wall.");
             }
             else
             {
@@ -119,56 +138,83 @@ namespace conrpggame.Game
                 {
                     exitDescription += $"{exit.WallLocation},";
                 }
-                messageHandler.Write($"出口在那邊~{exitDescription.Remove(exitDescription.Length - 1)} 的牆.");
+
+                messageHandler.Write($"This room has exits on the {exitDescription.Remove(exitDescription.Length - 1)} walls.");
             }
+
             if (room.chest != null)
             {
-                messageHandler.Write($"看裡面有個箱子!!");
+                messageHandler.Write($"There is a chest in the room!");
             }
         }
         private void RoomOptions(Room room)
         {
-            messageHandler.Write("貪婪的冒險者阿~你想做什?");
-            messageHandler.Write("------------------------");
-            messageHandler.Write("L)ook for traps");
-            messageHandler.Write("U)se an exit");
-            foreach (var exit in room.Exits)
-            {
-                messageHandler.Write($"({exit.WallLocation.ToString().Substring(0, 1)}){exit.WallLocation.ToString().Substring(1)}");
-            }
-            if (room.chest != null)
-            {
-                messageHandler.Write("O)pen the chest");
-                messageHandler.Write("C)heck the traps");
-            }
-            var playerDescription = messageHandler.Read().ToLower();
-            var exitroom = false;
+            WriteRoomOptions(room);
+            var playerDecision = messageHandler.Read().ToLower();
+            var exitRoom = false;
 
-            while (exitroom == false)
+            while (exitRoom == false)
             {
-                switch (playerDescription)
+                switch (playerDecision)
                 {
-                    case "1":
+                    case "l":
                     case "c":
                         CheckForTraps(room);
+                        WriteRoomOptions(room);
+                        playerDecision = messageHandler.Read().ToLower();
                         break;
                     case "o":
                         if (room.chest != null)
                         {
-                            Openchect(room.chest);
+                            OpenChest(room.chest);
+                            if (gameWon)
+                            {
+                                GameOver();
+                            }
+                            WriteRoomOptions(room);
+                            playerDecision = messageHandler.Read().ToLower();
                         }
                         else
                         {
-                            messageHandler.Write("裡面沒有箱子喔");
+                            messageHandler.Write("Alas, there is NO CHEST in this room!");
                         }
                         break;
                     case "n":
                     case "s":
                     case "e":
                     case "w":
-                        Exitroom(room);
+                        var wallLocation = CompassDirection.North;
+                        if (playerDecision == "s") wallLocation = CompassDirection.South;
+                        else if (playerDecision == "w") wallLocation = CompassDirection.West;
+                        else if (playerDecision == "e") wallLocation = CompassDirection.East;
+
+                        if (room.Exits.FirstOrDefault(x => x.WallLocation == wallLocation) != null)
+                        {
+                            ExitRoom(room, wallLocation);
+                        }
+                        else
+                        {
+                            Console.WriteLine("\n Um... that's a wall friend....\n");
+                        }
+
                         break;
                 }
+            }
+        }
+        private void WriteRoomOptions(Room room)
+        {
+            messageHandler.Write("WHAT WOULD YOU LIKE TO DO!?");
+            messageHandler.Write("----------------------------");
+            messageHandler.Write("L)ook for traps");
+            if (room.chest != null)
+            {
+                messageHandler.Write("O)pen the chest");
+                messageHandler.Write("C)heck chest for traps");
+            }
+            messageHandler.Write("Use an Exit:");
+            foreach (var exit in room.Exits)
+            {
+                messageHandler.Write($"({exit.WallLocation.ToString().Substring(0, 1)}){exit.WallLocation.ToString().Substring(1)}");
             }
         }
         private void CheckForTraps(Room room)
@@ -177,47 +223,145 @@ namespace conrpggame.Game
             {
                 if (room.tarp.TrippedOrDisarmed)
                 {
-                    messageHandler.Write("你看到陷阱但是閃躲跌倒了");
+                    messageHandler.Write("You've already found and disarmed this trap... or tripped it (ouch)");
                     return;
                 }
+
                 if (room.tarp.SearchedFor)
                 {
-                    messageHandler.Write("已經勘查過了，沒必要再勘察");
+                    messageHandler.Write("You've already search for a trap, friend!");
                     return;
                 }
-                var tarpBouns = 0 + Character.Abilities.Intelligence;
-                if (Character.Class == CharacterClass.Thief)
-                {
-                    tarpBouns += 2;
-                }
-                var dice = new Dice();
-                var findTrapRoll = dice.RollDice(new List<Die> { Die.D32 }) + tarpBouns;
 
-                if (findTrapRoll < 30)
+                var trapBonus = 0 + character.Abilities.Intelligence;
+                if (character.Class == CharacterClass.Thief)
                 {
-                    messageHandler.Write("你沒有發現陷阱");
+                    trapBonus += 2;
+                }
+
+                var dice = new Dice();
+                var findTrapRoll = dice.RollDice(new List<Die> { Die.D32 }) + trapBonus;
+
+                if (findTrapRoll < 12)
+                {
+                    messageHandler.Write("You find NO traps.");
                     room.tarp.SearchedFor = true;
                     return;
                 }
-                var disarmTarpRoll =dice.RollDice(new List<Die> { Die.D32})+tarpBouns;
-                if (disarmTarpRoll < 25)
+
+                messageHandler.Write("You've found a trap! And are forced to try and disarm...");
+                var disarmTrapRoll = dice.RollDice(new List<Die> { Die.D32 }) + trapBonus;
+
+                if (disarmTrapRoll < 11)
                 {
-                    messageHandler.Write("未發現陷阱，受到4點傷害");
+                    ProcessTrapMessagesAndDamage(room.tarp);
                 }
                 else
                 {
-                    messageHandler.Write("發現陷阱啦~~");
+                    messageHandler.Write("SHEW!!!  You disarmed the trap!");
                 }
                 room.tarp.TrippedOrDisarmed = true;
                 return;
-                
             }
-            messageHandler.Write("裡面沒有陷阱");
+            messageHandler.Write("You find no traps");
             return;
         }
-        private void Openchect(Chest chest)
+        private void ProcessTrapMessagesAndDamage(Tarp tarp)
         {
-            throw new NotImplementedException();
+            var dice = new Dice();
+
+            messageHandler.Write($"CLANK! A sound of metal falls into place... you TRIPPED a {tarp.TrapType} trap!");
+            var trapDamage = dice.RollDice(new List<Die>() { tarp.DamageDie });
+            character.Hitpoints -= trapDamage;
+            var hitPoints = character.Hitpoints;
+            messageHandler.Write($"YOU WERE DAMAGED FOR {trapDamage} HIT POINTS!  You now have {hitPoints} hit pointss!");
+            if (hitPoints < 1)
+            {
+                messageHandler.Write("AND......you're dead.");
+                character.CauseOfDeath = $"Killed by a {tarp.TrapType}... it was ugly.";
+                character.DiedInAdventure = gameAdventure.Title;
+                character.IsAlive = false;
+                GameOver();
+            }
+            messageHandler.Read();
+        }
+
+        private void OpenChest(Chest chest)
+        {
+            if (chest.Lock == null || !chest.Lock.Locked)
+            {
+                if (chest.tarp != null && !chest.tarp.TrippedOrDisarmed)
+                {
+                    ProcessTrapMessagesAndDamage(chest.tarp);
+                    chest.tarp.TrippedOrDisarmed = true;
+                }
+                else
+                {
+                    messageHandler.Write("You open the chest..");
+                    if (chest.Gold > 0)
+                    {
+                        character.Gold += chest.Gold;
+                        messageHandler.Write($"Woot! You find {chest.Gold} gold! Your total gold is now {character.Gold}\n");
+                        chest.Gold = 0;
+                    }
+
+                    if (chest.Treasure != null && chest.Treasure.Count > 0)
+                    {
+                        messageHandler.Write($"You find {chest.Treasure.Count} items in this chest!  And they are:");
+
+                        foreach (var item in chest.Treasure)
+                        {
+                            messageHandler.Write(item.Name.ToString());
+
+                            if (item.ObjectiveNumber == gameAdventure.FinalObjective)
+                            {
+                                gameWon = true;
+                                gameWinningDescription = item.Description;
+                                character.Gold += gameAdventure.CompletionGolereward;
+                                character.XP += gameAdventure.CompletionXPReward;
+                                character.AdventuresPlayed.Add(gameAdventure.GUID);
+                            }
+                        }
+                        messageHandler.Write("\n");
+
+                        character.Inventory.AddRange(chest.Treasure);
+                        chest.Treasure = new List<Item>();
+
+                        if (gameWon)
+                        {
+                            Console.BackgroundColor = ConsoleColor.DarkBlue;
+                            Console.ForegroundColor = ConsoleColor.White;
+                            messageHandler.Write("***************************************************");
+                            messageHandler.Write("*  ~~~YOU FOUND THE FINAL OBJECTIVE!  YOU WIN!~~~ *");
+                            messageHandler.Write("***************************************************");
+
+                            Console.BackgroundColor = ConsoleColor.Red;
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            messageHandler.Write("YOU FOUND : " + gameWinningDescription);
+                            messageHandler.Write("XP Reward = " + gameAdventure.CompletionXPReward);
+                            messageHandler.Write("Gold Reward = " + gameAdventure.CompletionGoldReward);
+                            messageHandler.Write(character.Name + " now has " + character.XP + " XP and " + character.Gold + " gold.");
+                        }
+                        return;
+                    }
+
+                    if (chest.Gold == 0 && (chest.Treasure == null || chest.Treasure.Count == 0))
+                    {
+                        messageHandler.Write("The chest is empty... \n");
+                    }
+                }
+            }
+            else
+            {
+                if (TryUnlock(chest.Lock))
+                {
+                    OpenChest(chest);
+                    if (gameWon)
+                    {
+                        GameOver();
+                    }
+                }
+            }
         }
         private void Exitroom(Room room)
         {
